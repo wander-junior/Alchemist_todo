@@ -4,15 +4,24 @@ defmodule AlchemistTodo do
   """
 
   @doc """
-  Hello world.
+  create_todo a new todo list.
+  """
+  def create_todo(), do: []
 
-  ## Examples
+  @doc """
+  Add item to todo list.
 
-      iex> AlchemistTodo.hello()
-      :world
+  Returns `["[ ] item" | list]`.
+
+  #Examples
+
+    iex> AlchemistTodo.add("Buy milk", [])
+    ["[ ] Buy milk"]
 
   """
-  def hello do
-    :world
+  def add(item, list) when is_bitstring(item) and is_list(list) do
+    ["[ ] #{item}" | list]
   end
+
+  def add(_, _), do: {:error, "Invalid arguments"}
 end
