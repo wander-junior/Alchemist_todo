@@ -2,15 +2,15 @@ defmodule AlchemistTodoTest do
   use ExUnit.Case
   doctest AlchemistTodo
 
-  test "create empty todo list" do
-    assert AlchemistTodo.create_todo() == []
+  describe "create_todo/0" do
+    test "create empty todo list" do
+      assert AlchemistTodo.create_todo() == []
+    end
   end
 
-  test "add new item" do
-    assert AlchemistTodo.add("Buy milk", ["[ ] Buy chocolate"]) == ["[ ] Buy milk", "[ ] Buy chocolate"]
-  end
-
-  test "add invalid item" do
-    assert AlchemistTodo.add(132, 12) == {:error, "Invalid arguments"}
+  describe "add/1" do
+    test "returns error when adding to a non-list value" do
+      assert AlchemistTodo.add("invalid_input") == {:error, "Invalid arguments when adding new item"}
+    end
   end
 end

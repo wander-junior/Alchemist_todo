@@ -3,25 +3,41 @@ defmodule AlchemistTodo do
   Documentation for `AlchemistTodo`.
   """
 
-  @doc """
-  create_todo a new todo list.
-  """
-  def create_todo(), do: []
+  defp create_todo(), do: []
 
-  @doc """
-  Add item to todo list.
+  defp add(list) when is_list(list) do
+    new_item = IO.gets("Type your new item\n")
 
-  Returns `["[ ] item" | list]`.
-
-  #Examples
-
-    iex> AlchemistTodo.add("Buy milk", [])
-    ["[ ] Buy milk"]
-
-  """
-  def add(item, list) when is_bitstring(item) and is_list(list) do
-    ["[ ] #{item}" | list]
+    loop(["[ ] #{new_item}" | list])
   end
 
-  def add(_, _), do: {:error, "Invalid arguments"}
+  defp read(list) do
+    IO.puts(list)
+    loop(list)
+  end
+
+  defp loop(todo) do
+    prompt = """
+    Choose a option:
+    a - add a new to do
+    r - read todo list
+    """
+
+    command = IO.gets(prompt)
+    |> String.trim()
+
+    case command do
+      "a" -> add(todo)
+      "r" -> read(todo)
+      _ -> loop(todo)
+    end
+  end
+
+  @doc """
+  Initialize command loop
+  """
+  def initialize() do
+    todo = create_todo()
+    loop(todo)
+  end
 end
