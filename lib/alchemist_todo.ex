@@ -3,20 +3,35 @@ defmodule AlchemistTodo do
   Documentation for `AlchemistTodo`.
   """
 
-  defp create_todo(), do: []
+  defstruct undone: [], done: []
 
-  defp add(list) when is_list(list) do
+  defp create_todo(), do: %AlchemistTodo{}
+
+  defp add(%AlchemistTodo{} = list) do
     new_item = IO.gets("Type your new item\n")
 
-    loop(["[ ] #{new_item}" | list])
+    loop(%{list | undone: [new_item | list.undone]})
   end
 
-  defp read(list) do
-    IO.puts(list)
+  defp read(%AlchemistTodo{} = list) do
+    IO.puts("Undone Items: ")
+
+    cond do
+      length(list.undone) > 0 -> IO.puts(list.undone)
+      true -> IO.puts("There is no undone item")
+    end
+
+    IO.puts("Done Items: ")
+
+    cond do
+      length(list.done) > 0 -> IO.puts(list.done)
+      true -> IO.puts("There is no done item")
+    end
+
     loop(list)
   end
 
-  defp loop(todo) do
+  defp loop(%AlchemistTodo{} = todo) do
     prompt = """
     Choose a option:
     a - add a new to do
@@ -37,7 +52,7 @@ defmodule AlchemistTodo do
   Initialize command loop
   """
   def initialize() do
-    todo = create_todo()
-    loop(todo)
+    create_todo()
+    |> loop()
   end
 end
