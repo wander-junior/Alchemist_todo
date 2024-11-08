@@ -31,20 +31,38 @@ defmodule AlchemistTodo do
     loop(list)
   end
 
-  defp loop(%AlchemistTodo{} = todo) do
+  defp complete(%AlchemistTodo{} = list) do
+    IO.puts("Choose a item to complete (type the number):")
+
+    Enum.with_index(list.undone, 1)
+    |> Enum.each(fn {item, index} ->
+      IO.puts("#{index} - #{item}")
+    end)
+
+    IO.gets("")
+    |> String.trim()
+    |> Integer.parse()
+    |> elem(0)
+
+    loop(list)
+  end
+
+  defp loop(%AlchemistTodo{} = list) do
     prompt = """
     Choose a option:
     a - add a new to do
     r - read todo list
+    c - complete a item
     """
 
     command = IO.gets(prompt)
     |> String.trim()
 
     case command do
-      "a" -> add(todo)
-      "r" -> read(todo)
-      _ -> loop(todo)
+      "a" -> add(list)
+      "r" -> read(list)
+      "c" -> complete(list)
+      _ -> loop(list)
     end
   end
 
